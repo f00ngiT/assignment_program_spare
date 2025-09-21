@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'booking_record.dart';
 import 'service_type.dart';
+import 'payment.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -35,7 +35,7 @@ class _ServiceBookingPageState extends State<ServiceBookingPage> {
   final _timeCtrl = TextEditingController();
   final _dateCtrl = TextEditingController();
 
-  String? selectedValue; //service type current selected value
+
   List<ServiceType> _serviceTypes = [];
   ServiceType? _selectedServiceType;
   bool _isLoading = true;
@@ -48,52 +48,86 @@ class _ServiceBookingPageState extends State<ServiceBookingPage> {
   }
 
   // insert record into supabase
+  // insert record into supabase
   Future<void> insertBooking() async {
     try {
-      //check if username exist
+      // check if username exist
       final userCheck = await supabase
           .from('user_account')
           .select()
           .eq('username', _userNameCtrl.text);
 
-      //if user not exist
-      if(userCheck.isEmpty){
+      if (userCheck.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Username can not found')));
+          const SnackBar(content: Text('Username not found')),
+        );
         return;
       }
 
-      //check crashing
+      // check for clash
       final existRec = await supabase
           .from('Booking')
           .select()
-          .eq('Date', _dateCtrl.text)   //eq = equal
+          .eq('Date', _dateCtrl.text)
           .eq('Time', _timeCtrl.text);
 
       if (existRec.length >= 2) {
-        // Booking clash found
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("All slot is already taken.")),
+          const SnackBar(content: Text("All slots are already taken.")),
         );
-        return; //if crashed, return
+        return;
       }
 
-      //if no crashing, then insert
+      // fetch the service price
+      final servicePriceResponse = await supabase
+          .from('ServiceType')
+          .select('ServicePrice')
+          .eq('ServiceTypeName', _selectedServiceType!.serviceTypeName)
+          .maybeSingle();
+
+      if (servicePriceResponse == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Error fetching service price")),
+        );
+        return;
+      }
+
+      final int servicePrice = servicePriceResponse['ServicePrice'] as int;
+
+      // insert booking
       final response = await supabase.from('Booking').insert({
         'PhoneNum': _phoneNumCtrl.text.trim(),
         'CarPlate': _carPlateNumCtrl.text.trim().toUpperCase(),
         'Description': _descriptionCtrl.text,
         'Date': _dateCtrl.text,
         'Time': _timeCtrl.text,
-        'ServiceType': _selectedServiceType?.serviceTypeName,
+        'ServiceType': _selectedServiceType!.serviceTypeName,
         'UserName': _userNameCtrl.text,
-      });
+      }).select('BookingId');
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Booking saved successfully!")),
-      );
+      if (response.isNotEmpty && response[0] != null) {
+        final int freshBookingId = response[0]['BookingId'] as int;
 
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Booking saved successfully!")),
+        );
 
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PaymentScreen(
+              bookingId: freshBookingId.toString(),
+              phoneNum: _phoneNumCtrl.text,
+              carPlate: _carPlateNumCtrl.text,
+              description: _descriptionCtrl.text,
+              date: DateTime.parse(_dateCtrl.text),
+              time: _timeCtrl.text,
+              serviceType: _selectedServiceType!.serviceTypeName,
+              amount: servicePrice.toDouble(),
+            ),
+          ),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error saving booking: $e")),
@@ -251,7 +285,7 @@ class _ServiceBookingPageState extends State<ServiceBookingPage> {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter phone number';
                               }
-                              if (value.length > 11) {
+                              if ((value.length != 10) && (value.length != 11)) {
                                 return 'Enter a valid phone number';
                               }
                               return null;

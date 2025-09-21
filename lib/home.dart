@@ -5,6 +5,7 @@ import 'service_booking.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'booking_record.dart';
+import 'payment.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -269,129 +270,161 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 150.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context, MaterialPageRoute(builder: (context) => const ServiceBookingApp())
-                                );
-                              },
-                              style: ButtonStyle(
-                                shape: WidgetStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => const ServiceBookingApp()));
+                                  },
+                                  style: ButtonStyle(
+                                    shape: WidgetStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                    ),
+                                    padding: WidgetStateProperty.all(EdgeInsets.all(12)),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Image.asset(
+                                        'assets/appointment_calendar.png',
+                                        height: 60,
+                                        width: 60,
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        "Service\nBooking",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                padding: WidgetStateProperty.all(EdgeInsets.all(12)),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.asset(
-                                    'assets/appointment_calendar.png',
-                                    height: 60,
-                                    width: 60,
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    "Service\nBooking",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context, MaterialPageRoute(builder: (context) => AppointmentHistory(username: widget.username))
-                                );
-                              },
-                              style: ButtonStyle(
-                                shape: WidgetStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                AppointmentHistory(username: widget.username)));
+                                  },
+                                  style: ButtonStyle(
+                                    shape: WidgetStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                    ),
+                                    padding: WidgetStateProperty.all(EdgeInsets.all(12)),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Image.asset(
+                                        'assets/history.webp',
+                                        height: 60,
+                                        width: 60,
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        "Appointment\nHistory",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                padding: WidgetStateProperty.all(EdgeInsets.all(12)),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.asset(
-                                    'assets/history.webp',
-                                    height: 60,
-                                    width: 60,
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    "Appointment\nHistory",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ButtonStyle(
-                                shape: WidgetStateProperty.all(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PaymentPage()));
+                                  },
+                                  style: ButtonStyle(
+                                    shape: WidgetStateProperty.all(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                    ),
+                                    padding: WidgetStateProperty.all(EdgeInsets.all(12)),
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Image.asset(
+                                        'assets/billing.png',
+                                        height: 60,
+                                        width: 60,
+                                      ),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        "E-billing /\nPayment",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                padding: WidgetStateProperty.all(EdgeInsets.all(12)),
                               ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Image.asset(
-                                    'assets/billing.png',
-                                    height: 60,
-                                    width: 60,
-                                  ),
-                                  SizedBox(height: 8),
-                                  Text(
-                                    "E-billing /\nPayment",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black
-                                    ),
-                                  ),
-                                ],
-                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 30),
+                        ElevatedButton.icon(
+                          onPressed: () async {
+                            await supabase.auth.signOut(); // Logs out user
+                            Navigator.of(context).pushReplacementNamed('/login'); // Go back to login
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.red,
+                            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          icon: const Icon(Icons.logout, color: Colors.white),
+                          label: const Text(
+                            "Logout",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ],
-                    )
-                  )
-
+                    ),
+                  ),
                 ],
               ),
             ],
