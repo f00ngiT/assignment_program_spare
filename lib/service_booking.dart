@@ -80,8 +80,8 @@ class _ServiceBookingPageState extends State<ServiceBookingPage> {
 
       //if no crashing, then insert
       final response = await supabase.from('Booking').insert({
-        'PhoneNum': _phoneNumCtrl.text,
-        'CarPlate': _carPlateNumCtrl.text.toUpperCase(),
+        'PhoneNum': _phoneNumCtrl.text.trim(),
+        'CarPlate': _carPlateNumCtrl.text.trim().toUpperCase(),
         'Description': _descriptionCtrl.text,
         'Date': _dateCtrl.text,
         'Time': _timeCtrl.text,

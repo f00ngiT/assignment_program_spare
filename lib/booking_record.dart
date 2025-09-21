@@ -18,8 +18,8 @@ class BookingRecord{
   });
 
   factory BookingRecord.fromJson(Map<String, dynamic> json) {
-    final timeString = json['Time'] as String;
-    final timeParts = timeString.split(':');
+    //final timeString = json['Time'] as String;
+    final timeParts = (json['Time'] as String).split(':');
     final parsedTime = TimeOfDay(
       hour: int.parse(timeParts[0]),
       minute: int.parse(timeParts[1]),
