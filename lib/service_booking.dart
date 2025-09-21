@@ -128,7 +128,6 @@ class _ServiceBookingPageState extends State<ServiceBookingPage> {
 
     try {
       final response = await supabase.from('ServiceType').select();
-      //print(response);
       final serviceTypes = (response as List).map((item) => ServiceType.fromJson(item)).toList();
       setState(() {
         _serviceTypes = serviceTypes;

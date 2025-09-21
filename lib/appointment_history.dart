@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'booking_record.dart';
+import 'service_type.dart';
+
+final supabase = Supabase.instance.client;
 
 class AppointmentHistory extends StatefulWidget {
   const AppointmentHistory({super.key});
