@@ -89,7 +89,6 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,13 +102,6 @@ class _LoginPageState extends State<LoginPage> {
                   decoration: BoxDecoration(
                     color: const Color(0xFFE9E6FF),
                     borderRadius: BorderRadius.circular(16),
-                    boxShadow: const [
-                      BoxShadow(
-                        blurRadius: 12,
-                        offset: Offset(0, 6),
-                        color: Color(0x1A000000),
-                      ),
-                    ],
                   ),
                   padding: const EdgeInsets.fromLTRB(16, 20, 16, 18),
                   child: Column(
@@ -122,7 +114,6 @@ class _LoginPageState extends State<LoginPage> {
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
-                          letterSpacing: 0.2,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -198,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: loading
                                     ? null
                                     : () async {
-                                  final row = await submit(); // call the function and wait for result
+                                  final row = await submit(); // call the function to run validate and result
                                   if ((row != null) && mounted) {
                                     Navigator.pushReplacement(
                                       context,
@@ -208,15 +199,15 @@ class _LoginPageState extends State<LoginPage> {
                                   },
                                 child: loading
                                     ? const SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2.2,
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                      strokeWidth: 2.2,
                                   ),
                                 )
                                     : const Text(
-                                  'Login',
-                                  style: TextStyle(
+                                      'Login',
+                                      style: TextStyle(
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),

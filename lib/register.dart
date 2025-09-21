@@ -36,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
     final password = _passCtrl.text;
 
     try {
-      // Insert into your table
+      // Insert into table
       final inserted = await supabase
           .from('user_account') // table name
           .insert({
@@ -120,7 +120,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         keyboardType: TextInputType.emailAddress,
                         validator: (v) {
                           if (v == null || v.isEmpty) return 'Enter your email';
-                          final ok = RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(v); // <-- fixed
+                          final ok = RegExp(r'^[^@]+@[^@]+\.[^@]+$').hasMatch(v);
                           return ok ? null : 'Enter a valid email';
                         },
                       ),
