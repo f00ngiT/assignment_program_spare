@@ -114,16 +114,16 @@ class _AppointmentHistoryState extends State<AppointmentHistory> {
                     child: ListTile(
                       leading: const Icon(Icons.event_note),
                       title: Text(
-                        booking.serviceTypeName,
+                        "Service Type: ${booking.serviceTypeName}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                       subtitle: Text(
-                        "${booking.description} • "
-                            "${booking.date.toLocal().toString().split(' ')[0]} "
-                            "at ${booking.time.format(context)}",
+                        "Description: ${booking.description}\n"
+                            "Date: ${booking.date.toLocal().toString().split(' ')[0]}\n"
+                            "Time: ${booking.time.format(context)}",
                         style: const TextStyle(fontSize: 14),
                       ),
                       trailing: Text(
