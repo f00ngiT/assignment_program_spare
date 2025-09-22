@@ -6,6 +6,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'booking_record.dart';
 import 'payment.dart';
+import 'login.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -165,6 +166,8 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+
+                  // Next appointment
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 20),
                     width: 370,
@@ -205,6 +208,8 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+
+                  // Current appointment
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 20),
                     width: 370,
@@ -268,13 +273,17 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+
+                  // Row of Buttons
                   Padding(
-                    padding: const EdgeInsets.only(top: 150.0),
+                    padding: const EdgeInsets.only(top: 120.0),
                     child: Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
+
+                            // Service Booking Button
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -315,6 +324,8 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
+
+                            // Appointment History Button
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -356,6 +367,8 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
+
+                            // Payment Button
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -399,11 +412,47 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
+
+                        // Logout Button
                         const SizedBox(height: 30),
                         ElevatedButton.icon(
-                          onPressed: () async {
-                            await supabase.auth.signOut(); // Logs out user
-                            Navigator.of(context).pushReplacementNamed('/login'); // Go back to login
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text("Confirm Logout?"),
+                                content: const Text("Are you sure you want to log out?"
+                                    "\nOnce logged out, you need to enter your username and password again."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // dismiss dialog
+                                    },
+                                    child: const Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      Navigator.of(context).pop(); // dismiss dialog first
+
+                                      // Sign out the current account
+                                      await supabase.auth.signOut();
+
+                                      // Reset username
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                        MaterialPageRoute(
+                                          builder: (context) => const PitStopApp(),
+                                        ),
+                                            (route) => false, // remove all previous routes
+                                      );
+                                    },
+                                    child: const Text(
+                                      "Logout",
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.red,
@@ -421,7 +470,8 @@ class _HomePageState extends State<HomePage> {
                               color: Colors.white,
                             ),
                           ),
-                        ),
+                        )
+
                       ],
                     ),
                   ),
